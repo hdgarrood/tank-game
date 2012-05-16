@@ -12,8 +12,8 @@ module TankGame
           # where arg1, arg2, etc are parameters for their constructors
           array = eval line
           if array
-            klass = array.shift
-            objects << klass.new(*array)
+            klass, *args = array
+            objects << klass.new(*args)
           end
         end
         return objects
