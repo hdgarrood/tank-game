@@ -1,5 +1,7 @@
 module TankGame
   class GameObject
+    attr_reader :x, :y
+
     def initialize(x, y)
       @sprite = nil
       @x = x
