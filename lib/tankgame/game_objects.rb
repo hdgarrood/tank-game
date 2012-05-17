@@ -15,7 +15,7 @@ module TankGame
     end
 
     def draw
-      @sprite.draw(x, y)
+      @sprite.draw(x, y, 0)
     end
   end
 
