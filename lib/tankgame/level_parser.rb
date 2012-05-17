@@ -1,5 +1,3 @@
-require 'tankgame/game_objects'
-
 module TankGame
   class LevelParser
     class << self
