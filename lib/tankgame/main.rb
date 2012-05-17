@@ -9,8 +9,8 @@ module TankGame
     def initialize
       super(640, 480, false)
       self.caption = "hello world"
-      @fsm = FiniteStateMachine.new(self)
-      @resources = ResourceManager.new(self)
+      @fsm = FiniteStateMachine.new
+      @resources = ResourceManager.new
     end
 
     def update

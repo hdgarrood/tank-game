@@ -3,8 +3,7 @@ require 'tankgame/level_parser'
 module TankGame
   module State
     class Base
-      def initialize(window)
-        @window = window
+      def initialize
         @objects = []
       end
 
@@ -23,8 +22,7 @@ module TankGame
     end
 
     class Game < Base
-      def initialize(window)
-        @window = window
+      def initialize
         @objects = LevelParser.parse('one')
       end
     end
