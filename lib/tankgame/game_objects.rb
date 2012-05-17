@@ -1,8 +1,7 @@
-
 module TankGame
   class GameObject
-    SPRITE = nil
     def initialize(x, y)
+      @sprite = nil
       @x = x
       @y = y
     end
@@ -11,13 +10,16 @@ module TankGame
     end
 
     def draw
-      SPRITE.draw(x, y)
+      @sprite.draw(x, y)
     end
   end
 
 
   class Block < GameObject
-    SPRITE = ResourcesManager.sprites['block']
+    def initialize(x,y)
+      super(x, y)
+      @sprite = $window.resources.sprites['block']
+    end
   end
 end
 
