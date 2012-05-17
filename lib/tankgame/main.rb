@@ -1,6 +1,6 @@
 require 'gosu'
-require 'tankgame/finite_state_machine'
 require 'tankgame/resource_manager'
+require 'tankgame/finite_state_machine'
 
 module TankGame
   class MainWindow < Gosu::Window
@@ -9,8 +9,12 @@ module TankGame
     def initialize
       super(640, 480, false)
       self.caption = "hello world"
-      @fsm = FiniteStateMachine.new
+    end
+
+    def start
       @resources = ResourceManager.new
+      @fsm = FiniteStateMachine.new
+      return self
     end
 
     def update
