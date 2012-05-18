@@ -11,6 +11,7 @@
 #   system("rm -rf /")
 #
 # which obviously would have tragic consequences.
+[Player, 64, 416]
 [Block, 0, 448]
 [Block, 32, 448]
 [Block, 64, 448]
