@@ -62,7 +62,7 @@ module TankGame
       @y += @yspeed
       if @xspeed.nonzero?
         # friction reduces the player's speed
-        @xspeed > 0 ? @xspeed += friction : @xspeed -= friction
+        @xspeed > 0 ? @xspeed -= friction : @xspeed += friction
       end
     end
 
@@ -79,9 +79,9 @@ module TankGame
     end
 
     # the amount the player should slow down each step if he stops
-    # pressing buttons
+    # pressing buttons. returns absolute value
     def friction
-      0.7
+      (@xspeed * 0.3).abs
     end
   end
 end
