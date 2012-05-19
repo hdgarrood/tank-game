@@ -1,4 +1,5 @@
 require 'gosu'
+require 'tankgame/countdown'
 
 module TankGame
   class GameObject
@@ -38,7 +39,14 @@ module TankGame
         :barrel_r => $window.resources.sprites['barrel_right']
       }
       @xspeed = @yspeed = 0
-      @status = {}
+
+      # values in the status hash should be updated in handle_events,
+      # and acted upon in do_logic
+      # any of this sort of state data should be stored in here.
+      @status = {
+        :boosting => false,
+        :boost_timer => nil
+      }
     end
 
     def handle_events
@@ -49,9 +57,28 @@ module TankGame
       else
         @status[:motion] = :none
       end
+      
+      if $window.button_down? Gosu::KbLeftShift
+        @status[:wants_to_boost] = true
+      else
+        @status[:wants_to_boost] = false
+      end
     end
 
     def do_logic
+      # boosting
+      if @status[:boosting] && @status[:boost_timer].finished?
+        @status[:boosting] = false
+        @status[:boost_timer] = nil
+      end
+
+      if @status[:wants_to_boost] && can_boost?
+        @status[:boosting] = true
+        @status[:boost_timer] = Countdown.new.start(1000)
+      end 
+
+      
+      # motion
       case @status[:motion]
       when :left
         @xspeed -= acceleration
@@ -75,13 +102,21 @@ module TankGame
     # (by means of the tank's engine) -- this should not be used for
     # gravity, etc.
     def acceleration
-      0.5
+      if @status[:boosting]
+        1.2
+      else
+        0.5
+      end
     end
 
     # the amount the player should slow down each step if he stops
     # pressing buttons. returns absolute value
     def friction
       (@xspeed * 0.3).abs
+    end
+
+    def can_boost?
+      @status[:boost_timer].nil? or @status[:boost_timer].finished?
     end
   end
 end
