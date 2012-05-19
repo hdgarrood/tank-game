@@ -26,7 +26,7 @@ module TankGame
   class Block < GameObject
     def initialize(x, y)
       super(x, y)
-      @sprite = $window.resources.sprites['block']
+      @sprite = $window.resources.sprites[:block]
     end
   end
 
@@ -34,9 +34,9 @@ module TankGame
     def initialize(x, y)
       super(x, y)
       @sprites = {
-        :tank => $window.resources.sprites['player'],
-        :barrel_l => $window.resources.sprites['barrel_left'],
-        :barrel_r => $window.resources.sprites['barrel_right']
+        :tank => $window.resources.sprites[:player],
+        :barrel_l => $window.resources.sprites[:barrel_left],
+        :barrel_r => $window.resources.sprites[:barrel_right]
       }
       @xspeed = @yspeed = 0
 
