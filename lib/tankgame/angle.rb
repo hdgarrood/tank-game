@@ -13,7 +13,7 @@ module TankGame
         :first
       elsif @angle.between? PI/2, PI
         :second
-      elsif @angle.between? 0, -PI/2
+      elsif @angle.between? -PI, -PI/2
         :third
       else
         :fourth
