@@ -11,10 +11,10 @@ module TankGame
       self.caption = "hello world"
     end
 
-    def start
+    def show
       @resources = ResourceManager.new
       @fsm = FiniteStateMachine.new
-      return self
+      super
     end
 
     def update
