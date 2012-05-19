@@ -114,7 +114,7 @@ module TankGame
     # the amount the player should slow down each step if he stops
     # pressing buttons. returns absolute value
     def friction
-      (@xspeed * 0.3).abs
+      (@xspeed * 0.2).abs
     end
 
     def can_boost?
