@@ -103,8 +103,8 @@ module TankGame
 
       if @wants_to_boost && can_boost?
         @boosting = true
-        @boost_timer = Countdown.new.start(1000)
-        @boost_wait_timer = Countdown.new.start(10000)
+        @boost_timer = Countdown.new.start(boost_length)
+        @boost_wait_timer = Countdown.new.start(boost_wait_length)
       end 
 
       # motion
@@ -163,6 +163,17 @@ module TankGame
 
     def barrel_rotate_speed
       0.1
+    end
+
+    # time in ms which a boost lasts
+    def boost_length
+      800
+    end
+
+    # time in ms between starting one boost and being able to start
+    # another one
+    def boost_wait_length
+      10000
     end
   end
 end
