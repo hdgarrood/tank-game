@@ -18,12 +18,20 @@ module TankGame
         @objects.each do |o|
           o.draw
         end
+        if uses_special_cursor?
+          $window.resources.sprites[:cursor].draw($window.mouse_x,
+                                                  $window.mouse_y, 0)
+        end
       end
     end
 
     class Game < Base
       def initialize
         @objects = LevelParser.parse('one')
+      end
+
+      def uses_special_cursor?
+        true
       end
     end
   end
