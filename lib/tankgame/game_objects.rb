@@ -1,10 +1,10 @@
 require 'gosu'
 require 'tankgame/countdown'
-require 'tankgame/angle'
+require 'tankgame/geometry'
 
 module TankGame
   class GameObject
-    attr_reader :x, :y
+    attr_accessor :x, :y
 
     def initialize(x, y)
       @sprite = nil
@@ -42,6 +42,36 @@ module TankGame
     # bouncing box in pixels
     def offset_y
       0
+    end
+
+    # true if +self+ placed at +x+, +y+ would collide with an object
+    # which is an object of class +klass+
+    def place_meeting?(x, y, klass)
+      $window.fsm.current_state.place_meeting?(self, x, y, klass)
+    end
+
+    # returns the top-left and bottom-right corner of the object,
+    # dependent upon +offset_x+, +offset_y+, +width+, and +height+
+    def two_corners
+      x1 = @x + offset_x
+      x2 = x1 + width
+      y1 = @y + offset_y
+      y2 = y1 + height
+      return [[x1, y1], [x2, y2]]
+    end
+
+    # returns the co-ordinates of each corner of the object (dependent
+    # upon +offset_x+, +offset_y+, +width+, and +height+) as a 4-element
+    # array, with each element being a 2-element array, ie [[x1, y1],
+    # [x1, y2], [x2,  y1], [x2, y2]]
+    def four_corners
+      c = two_corners
+      return [
+        c[0],
+        [c[0][0], c[0][1]],
+        [c[1][0], c[0][1]],
+        c[1]
+      ]
     end
 
     private

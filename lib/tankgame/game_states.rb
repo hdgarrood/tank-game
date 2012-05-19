@@ -1,5 +1,6 @@
 require 'gosu'
 require 'tankgame/level_parser'
+require 'tankgame/geometry'
 
 module TankGame
   module State
@@ -27,6 +28,22 @@ module TankGame
           cursor.draw($window.mouse_x - (cursor.width / 2),
                       $window.mouse_y - (cursor.height / 2), 0)
         end
+      end
+
+      # returns true if +obj+ placed at +x+, +y+ collides with an
+      # instance of +klass+, else returns false
+      def place_meeting?(obj, x, y, klass)
+        test_obj = obj.dup
+        test_obj.x = x
+        test_obj.y = y
+
+        @objects.each do |o|
+          next if !o.is_a? klass
+          test_obj.four_corners.each do |x, y|
+            return true if Point.new(x, y).within_rect?(*o.two_corners.flatten)
+          end
+        end
+        return false
       end
 
       private
