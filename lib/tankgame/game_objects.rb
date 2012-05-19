@@ -39,49 +39,43 @@ module TankGame
         :barrel_r => $window.resources.sprites[:barrel_right]
       }
       @xspeed = @yspeed = 0
-
-      # values in the status hash should be updated in handle_events,
-      # and acted upon in do_logic
-      # any of this sort of state data should be stored in here.
-      @status = {
-        :boosting => false,
-        :boost_timer => nil,
-        :boost_wait_timer => nil
-      }
+      @boosting = false
+      @boost_timer = nil
+      @boost_wait_timer = nil
     end
 
     def handle_events
       if $window.button_down? Gosu::KbD
-        @status[:motion] = :right
+        @motion = :right
       elsif $window.button_down? Gosu::KbA
-        @status[:motion] = :left
+        @motion = :left
       else
-        @status[:motion] = :none
+        @motion = :none
       end
       
       if $window.button_down? Gosu::KbLeftShift
-        @status[:wants_to_boost] = true
+        @wants_to_boost = true
       else
-        @status[:wants_to_boost] = false
+        @wants_to_boost = false
       end
     end
 
     def do_logic
       # boosting
-      if @status[:boosting] && @status[:boost_timer].finished?
-        @status[:boosting] = false
-        @status[:boost_timer] = nil
+      if @boosting && @boost_timer.finished?
+        @boosting = false
+        @boost_timer = nil
       end
 
-      if @status[:wants_to_boost] && can_boost?
-        @status[:boosting] = true
-        @status[:boost_timer] = Countdown.new.start(1000)
-        @status[:boost_wait_timer] = Countdown.new.start(10000)
+      if @wants_to_boost && can_boost?
+        @boosting = true
+        @boost_timer = Countdown.new.start(1000)
+        @boost_wait_timer = Countdown.new.start(10000)
       end 
 
       
       # motion
-      case @status[:motion]
+      case @motion
       when :left
         @xspeed -= acceleration
       when :right
@@ -104,7 +98,7 @@ module TankGame
     # (by means of the tank's engine) -- this should not be used for
     # gravity, etc.
     def acceleration
-      if @status[:boosting]
+      if @boosting
         1.2
       else
         0.5
@@ -118,8 +112,8 @@ module TankGame
     end
 
     def can_boost?
-      @status[:boost_wait_timer].nil? or
-      @status[:boost_wait_timer].finished?
+      @boost_wait_timer.nil? or
+      @boost_wait_timer.finished?
     end
   end
 end
