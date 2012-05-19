@@ -3,8 +3,18 @@ module TankGame
     include Math
     attr_reader :angle
 
+    def self.normalize(angle)
+      if angle < -PI
+        self.normalize(angle + PI)
+      elsif angle > PI
+        self.normalize(angle - PI)
+      else
+        angle
+      end
+    end
+
     def initialize(angle)
-      @angle = normalize(angle)
+      @angle = Angle.normalize(angle)
     end
 
     def quadrant
@@ -25,17 +35,6 @@ module TankGame
         :right
       else
         :left
-      end
-    end
-
-    private
-    def normalize(angle)
-      if angle < -PI
-        normalize(angle + PI)
-      elsif angle > PI
-        normalize(angle - PI)
-      else
-        angle
       end
     end
   end

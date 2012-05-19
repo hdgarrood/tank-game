@@ -23,8 +23,9 @@ module TankGame
           o.draw
         end
         if uses_special_cursor?
-          $window.resources.sprites[:cursor].draw($window.mouse_x,
-                                                  $window.mouse_y, 0)
+          cursor = $window.resources.sprites[:cursor]
+          cursor.draw($window.mouse_x - (cursor.width / 2),
+                      $window.mouse_y - (cursor.height / 2), 0)
         end
       end
 

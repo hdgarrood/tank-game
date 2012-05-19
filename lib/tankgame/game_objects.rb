@@ -51,9 +51,11 @@ module TankGame
       @boosting = false
       @boost_timer = nil
       @boost_wait_timer = nil
+      @barrel_angle = 0.0
     end
 
     def handle_events
+      # left/right motion
       if $window.button_down? Gosu::KbD
         @motion = :right
       elsif $window.button_down? Gosu::KbA
@@ -62,10 +64,23 @@ module TankGame
         @motion = :none
       end
       
+      # boosting
       if $window.button_down? Gosu::KbLeftShift
         @wants_to_boost = true
       else
         @wants_to_boost = false
+      end
+
+      # work out which direction the barrel wants to be pointing
+      mouse_angle = Angle.new(Math.atan2($window.mouse_y - centre[1],
+                                          $window.mouse_x - centre[0]))
+      case mouse_angle.quadrant
+      when :first
+        @barrel_target = 0.0
+      when :second
+        @barrel_target = -Math::PI
+      else
+        @barrel_target = mouse_angle.angle
       end
     end
 
@@ -82,7 +97,6 @@ module TankGame
         @boost_wait_timer = Countdown.new.start(10000)
       end 
 
-      
       # motion
       case @motion
       when :left
@@ -96,20 +110,22 @@ module TankGame
         # friction reduces the player's speed
         @xspeed > 0 ? @xspeed -= friction : @xspeed += friction
       end
+
+      # barrel direction
+      barrel_difference = @barrel_angle - @barrel_target
+      print "DEBUG: barrel_target #{@barrel_target}\r"
+      if barrel_difference.abs < barrel_rotate_speed
+        @barrel_angle = @barrel_target
+      elsif @barrel_angle < @barrel_target
+        @barrel_angle += barrel_rotate_speed
+      else
+        @barrel_angle -= barrel_rotate_speed
+      end
     end
 
     def draw
-      barrel_angle = Angle.new(Math.atan2($window.mouse_y - @y,
-                                          $window.mouse_x - @x))
-      case barrel_angle.quadrant
-      when :first
-        # the mouse is below and to the right of the tank
-        # the barrel points horizontally right
-        @barrel_sprite[:right].draw(*centre, 0)
-      when :second
-        @barrel_sprite[:left].draw(centre[0] - @barrel_sprite[:left].width, centre[1], 0)
-      else
-      end
+      barrel_direction = Angle.new(@barrel_angle).direction
+      @barrel_sprite[barrel_direction].draw_rot(*centre, 0, @barrel_angle.radians_to_gosu + 270, 0)
       super
     end
 
@@ -134,6 +150,10 @@ module TankGame
     def can_boost?
       @boost_wait_timer.nil? or
       @boost_wait_timer.finished?
+    end
+
+    def barrel_rotate_speed
+      0.1
     end
   end
 end
