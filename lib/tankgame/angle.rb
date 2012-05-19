@@ -4,9 +4,7 @@ module TankGame
     attr_reader :angle
 
     def initialize(angle)
-      if angle <= PI && angle >= -PI
-        @angle = angle
-      end
+      @angle = normalize(angle)
     end
 
     def quadrant
@@ -19,6 +17,25 @@ module TankGame
         :third
       else
         :fourth
+      end
+    end
+
+    def direction
+      if @angle.between? -PI/2, PI/2
+        :right
+      else
+        :left
+      end
+    end
+
+    private
+    def normalize(angle)
+      if angle < -PI
+        normalize(angle + PI)
+      elsif angle > PI
+        normalize(angle - PI)
+      else
+        angle
       end
     end
   end
