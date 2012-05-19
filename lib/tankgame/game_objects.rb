@@ -45,7 +45,8 @@ module TankGame
       # any of this sort of state data should be stored in here.
       @status = {
         :boosting => false,
-        :boost_timer => nil
+        :boost_timer => nil,
+        :boost_wait_timer => nil
       }
     end
 
@@ -75,6 +76,7 @@ module TankGame
       if @status[:wants_to_boost] && can_boost?
         @status[:boosting] = true
         @status[:boost_timer] = Countdown.new.start(1000)
+        @status[:boost_wait_timer] = Countdown.new.start(10000)
       end 
 
       
@@ -116,7 +118,8 @@ module TankGame
     end
 
     def can_boost?
-      @status[:boost_timer].nil? or @status[:boost_timer].finished?
+      @status[:boost_wait_timer].nil? or
+      @status[:boost_wait_timer].finished?
     end
   end
 end
