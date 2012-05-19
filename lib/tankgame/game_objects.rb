@@ -113,7 +113,6 @@ module TankGame
 
       # barrel direction
       barrel_difference = @barrel_angle - @barrel_target
-      print "DEBUG: barrel_target #{@barrel_target}\r"
       if barrel_difference.abs < barrel_rotate_speed
         @barrel_angle = @barrel_target
       elsif @barrel_angle < @barrel_target
