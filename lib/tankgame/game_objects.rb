@@ -22,13 +22,23 @@ module TankGame
       @sprite.draw(x, y, 0)
     end
 
-    private
+    # used for collision detection. override to give a bouncing block
+    def width
+      @sprite.width
+    end
 
+    # used for collision detection. override to give a bouncing block
+    def height
+      @sprite.height
+    end
+
+    private
     # returns a list [x, y] of the co-ordinates of what looks like the
     # centre of the object (judging by the sprite)
     def centre
       [@x + (@sprite.width / 2), @y + (@sprite.height / 2)]
     end
+
   end
 
 
