@@ -22,14 +22,26 @@ module TankGame
       @sprite.draw(x, y, 0)
     end
 
-    # used for collision detection. override to give a bouncing block
+    # the object's physical width, used for collisions
     def width
-      @sprite.width
+      0
     end
 
-    # used for collision detection. override to give a bouncing block
+    # the object's physical height, used for collisions
     def height
-      @sprite.height
+      0
+    end
+
+    # the distance (x) from @x to the top-left corner of the object's
+    # bouncing box in pixels
+    def offset_x
+      0
+    end
+
+    # the distance (y) from @y to the top-left corner of the object's
+    # bouncing box in pixels
+    def offset_y
+      0
     end
 
     private
@@ -46,6 +58,14 @@ module TankGame
     def initialize(x, y)
       super(x, y)
       @sprite = $window.resources.sprites[:block]
+    end
+
+    def width
+      32
+    end
+
+    def height
+      32
     end
   end
 
