@@ -42,7 +42,7 @@ module TankGame
     class Game < Base
       def initialize
         super
-        @objects, @objectmap = LevelParser.parse('one')
+        @objects = LevelParser.parse('one')
       end
 
       def uses_special_cursor?
