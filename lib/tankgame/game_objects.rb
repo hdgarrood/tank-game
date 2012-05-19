@@ -1,5 +1,6 @@
 require 'gosu'
 require 'tankgame/countdown'
+require 'tankgame/angle'
 
 module TankGame
   class GameObject
@@ -20,6 +21,14 @@ module TankGame
     def draw
       @sprite.draw(x, y, 0)
     end
+
+    private
+
+    # returns a list [x, y] of the co-ordinates of what looks like the
+    # centre of the object (judging by the sprite)
+    def centre
+      [@x + (@sprite.width / 2), @y + (@sprite.height / 2)]
+    end
   end
 
 
@@ -33,10 +42,10 @@ module TankGame
   class Player < GameObject
     def initialize(x, y)
       super(x, y)
-      @sprites = {
-        :tank => $window.resources.sprites[:player],
-        :barrel_l => $window.resources.sprites[:barrel_left],
-        :barrel_r => $window.resources.sprites[:barrel_right]
+      @sprite = $window.resources.sprites[:player]
+      @barrel_sprite = {
+        :left => $window.resources.sprites[:barrel_left],
+        :right => $window.resources.sprites[:barrel_right]
       }
       @xspeed = @yspeed = 0
       @boosting = false
@@ -90,7 +99,18 @@ module TankGame
     end
 
     def draw
-      @sprites[:tank].draw(x, y, 0)
+      barrel_angle = Angle.new(Math.atan2($window.mouse_y - @y,
+                                          $window.mouse_x - @x))
+      case barrel_angle.quadrant
+      when :first
+        # the mouse is below and to the right of the tank
+        # the barrel points horizontally right
+        @barrel_sprite[:right].draw(*centre, 0)
+      when :second
+        @barrel_sprite[:left].draw(centre[0] - @barrel_sprite[:left].width, centre[1], 0)
+      else
+      end
+      super
     end
 
     private
