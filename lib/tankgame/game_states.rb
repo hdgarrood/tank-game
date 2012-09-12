@@ -32,8 +32,11 @@ module TankGame
 
       # returns true if +obj+ placed at +x+, +y+ collides with an
       # instance of +klass+, else returns false
-      def place_meeting?(obj, x, y, klass)
+      def collided_with?(obj, klass, x, y)
         test_obj = obj.dup
+        [x, y].each do |arg|
+          fail "can't pass non-numeric value #{arg} to collided_with" unless arg.is_a? Numeric
+        end
         test_obj.x = x
         test_obj.y = y
 

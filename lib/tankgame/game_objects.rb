@@ -46,8 +46,8 @@ module TankGame
 
     # true if +self+ placed at +x+, +y+ would collide with an object
     # which is an object of class +klass+
-    def place_meeting?(x, y, klass)
-      $window.fsm.current_state.place_meeting?(self, x, y, klass)
+    def collided_with?(klass, x = @x, y = @y)
+      $window.fsm.current_state.collided_with?(self, klass, x, y)
     end
 
     # returns the top-left and bottom-right corner of the object,
@@ -68,7 +68,7 @@ module TankGame
       c = two_corners
       return [
         c[0],
-        [c[0][0], c[0][1]],
+        [c[0][0], c[1][1]],
         [c[1][0], c[0][1]],
         c[1]
       ]
@@ -133,7 +133,7 @@ module TankGame
 
       # work out which direction the barrel wants to be pointing
       mouse_angle = Angle.new(Math.atan2($window.mouse_y - centre[1],
-                                          $window.mouse_x - centre[0]))
+                                         $window.mouse_x - centre[0]))
       case mouse_angle.quadrant
       when :first
         @barrel_target = 0.0
@@ -142,6 +142,9 @@ module TankGame
       else
         @barrel_target = mouse_angle.angle
       end
+
+      # debug
+      print collided_with?(Block) ? "collision with block!\r" : "no collision      \r"
     end
 
     def do_logic
@@ -224,6 +227,15 @@ module TankGame
     # another one
     def boost_wait_length
       10000
+    end
+
+    def width
+      # FIXME: make bouncing box better for player
+      32
+    end
+
+    def height
+      32
     end
   end
 end
