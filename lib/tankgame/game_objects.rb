@@ -4,6 +4,7 @@ require 'tankgame/geometry'
 
 module TankGame
   class GameObject
+    include Geometry
     attr_accessor :x, :y
 
     def initialize(x, y)
