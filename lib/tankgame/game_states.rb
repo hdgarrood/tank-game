@@ -1,13 +1,14 @@
 require 'gosu'
 require 'tankgame/level_parser'
 require 'tankgame/geometry'
+require 'tankgame/background_drawing'
 
 module TankGame
   module State
     class Base
+      extend BackgroundDrawing
+
       def initialize
-        @bottom_colour = Gosu::Color.argb(0xff6b6b6b)
-        @top_colour = Gosu::Color.argb(0xfff0f0f0)
         @objects = []
       end
 
@@ -19,7 +20,7 @@ module TankGame
       end
 
       def draw
-        draw_background
+        draw_background($window)
         @objects.each(&:draw)
         if uses_crosshair_cursor?
           cursor = $window.resources.sprites[:crosshair_cursor]
@@ -45,15 +46,6 @@ module TankGame
           end
         end
         return false
-      end
-
-      private
-      def draw_background
-        $window.draw_quad(0, 0, @top_colour,
-                          $window.width, 0, @top_colour,
-                          0, $window.height, @bottom_colour,
-                          $window.width, $window.height, @bottom_colour,
-                          0)
       end
     end
 
