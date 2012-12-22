@@ -13,10 +13,7 @@ module TankGame
       end
 
       def update
-        @objects.each do |o|
-          o.handle_events
-          o.do_logic
-        end
+        @objects.each(&:handle_events).each(&:do_logic)
       end
 
       def draw
