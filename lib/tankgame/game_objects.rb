@@ -104,9 +104,6 @@ module TankGame
         :right => $window.resources.sprites[:barrel_right]
       }
       @xspeed = @yspeed = 0
-      @boosting = false
-      @boost_timer = nil
-      @boost_wait_timer = nil
       @barrel_angle = 0.0
     end
 
@@ -120,13 +117,6 @@ module TankGame
         @motion = :none
       end
       
-      # boosting
-      if $window.button_down? Gosu::KbLeftShift
-        @wants_to_boost = true
-      else
-        @wants_to_boost = false
-      end
-
       # work out which direction the barrel wants to be pointing
       mouse_angle = Angle.new(Math.atan2($window.mouse_y - centre.y,
                                          $window.mouse_x - centre.x))
@@ -144,18 +134,6 @@ module TankGame
     end
 
     def do_logic
-      # boosting
-      if @boosting && @boost_timer.finished?
-        @boosting = false
-        @boost_timer = nil
-      end
-
-      if @wants_to_boost && can_boost?
-        @boosting = true
-        @boost_timer = Countdown.new.start(boost_length)
-        @boost_wait_timer = Countdown.new.start(boost_wait_length)
-      end 
-
       # motion
       case @motion
       when :left
@@ -188,15 +166,9 @@ module TankGame
     end
 
     private
-    # returns the current highest possible acceleration for the player
-    # (by means of the tank's engine) -- this should not be used for
-    # gravity, etc.
+    # returns the current highest possible x-acceleration for the player
     def acceleration
-      if @boosting
-        1.2
-      else
-        0.5
-      end
+      0.5
     end
 
     # the amount the player should slow down each step if he stops
@@ -205,24 +177,8 @@ module TankGame
       (@xspeed * 0.2).abs
     end
 
-    def can_boost?
-      @boost_wait_timer.nil? or
-      @boost_wait_timer.finished?
-    end
-
     def barrel_rotate_speed
       0.1
-    end
-
-    # time in ms which a boost lasts
-    def boost_length
-      800
-    end
-
-    # time in ms between starting one boost and being able to start
-    # another one
-    def boost_wait_length
-      10000
     end
 
     def width
