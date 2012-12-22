@@ -17,18 +17,12 @@ module TankGame
       current_state.update
     end
 
-    def draw
-      current_state.draw
-    end
-
     private
     def change_state_if_needed
       unless @next_state.nil?
-        @current_state = next_state.new
-        @next_state = nil
+        @current_state, @next_state = @next_state, nil
       end
     end
-
   end
 end
 
