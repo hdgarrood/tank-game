@@ -14,6 +14,7 @@ end
 
 desc "Run tests with SimpleCov coverage"
 task :coverage do
+  $LOAD_PATH << './lib'
   require 'simplecov'
   SimpleCov.start do
     add_filter '/test/'

@@ -56,7 +56,7 @@ module TankGame
         elsif angle > 2*PI
           normalize(angle - 2*PI)
         else
-          angle
+          angle.to_f
         end
       end
     end
