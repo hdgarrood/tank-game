@@ -17,7 +17,7 @@ module TankGame
       # is the passed Point inside self?
       def contains_point?(p, opts = {:inclusive => true})
         gt_op, lt_op = opts[:inclusive] ? [:>, :<] : [:>=, :<=]
-        return p.x.send(gt_op, @x1) &&
+        p.x.send(gt_op, @x1) &&
           p.x.send(lt_op, @x2) &&
           p.y.send(gt_op, @y1) &&
           p.y.send(lt_op, @y2)
