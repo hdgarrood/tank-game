@@ -1,6 +1,7 @@
 module TankGame
   module Geometry
     class Angle
+      include Comparable
       include Math
 
       def initialize(radians)
@@ -13,7 +14,7 @@ module TankGame
           :first
         elsif @radians.between? PI/2, PI
           :second
-        elsif @radians.between? -PI, -PI/2
+        elsif @radians.between? PI, 3*PI/2
           :third
         else
           :fourth
@@ -21,7 +22,7 @@ module TankGame
       end
 
       def direction
-        if @radians.between? -PI/2, PI/2
+        if [:first, :fourth].include?(quadrant)
           :right
         else
           :left
@@ -32,12 +33,28 @@ module TankGame
         @radians.to_f
       end
 
+      def +(other)
+        Angle.new(to_f + other.to_f)
+      end
+
+      def -(other)
+        Angle.new(to_f - other.to_f)
+      end
+
+      def <=>(other)
+        to_f <=> other.to_f
+      end
+
+      def to_gosu
+        to_f.radians_to_gosu
+      end
+
       private
       def normalize(angle)
-        if angle < -PI
-          normalize(angle + PI)
-        elsif angle > PI
-          normalize(angle - PI)
+        if angle < 0
+          normalize(angle + 2*PI)
+        elsif angle > 2*PI
+          normalize(angle - 2*PI)
         else
           angle
         end

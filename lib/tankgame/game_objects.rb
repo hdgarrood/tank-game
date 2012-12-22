@@ -5,6 +5,7 @@ require 'tankgame/geometry'
 module TankGame
   class GameObject
     include Geometry
+    include Math
     attr_accessor :x, :y
 
     def initialize(x, y)
@@ -105,7 +106,7 @@ module TankGame
         :right => $window.resources.sprites[:barrel_right]
       }
       @xspeed = @yspeed = 0
-      @barrel_angle = 0.0
+      @barrel_angle = Angle.new(0)
     end
 
     def handle_events
@@ -123,11 +124,11 @@ module TankGame
                                          $window.mouse_x - centre.x))
       case mouse_angle.quadrant
       when :first
-        @barrel_target = 0.0
+        @barrel_target = Angle.new(0)
       when :second
-        @barrel_target = -Math::PI
+        @barrel_target = Angle.new(-Math::PI)
       else
-        @barrel_target = mouse_angle.to_f
+        @barrel_target = mouse_angle
       end
 
       # debug
@@ -151,7 +152,7 @@ module TankGame
 
       # barrel direction
       barrel_difference = @barrel_angle - @barrel_target
-      if barrel_difference.abs < barrel_rotate_speed
+      if barrel_difference < barrel_rotate_speed
         @barrel_angle = @barrel_target
       elsif @barrel_angle < @barrel_target
         @barrel_angle += barrel_rotate_speed
@@ -161,8 +162,12 @@ module TankGame
     end
 
     def draw
-      barrel_direction = Angle.new(@barrel_angle).direction
-      @barrel_sprite[barrel_direction].draw_rot(*centre, 0, @barrel_angle.radians_to_gosu + 270, 0)
+      barrel_direction = @barrel_angle.direction
+      @barrel_sprite[barrel_direction].draw_rot(
+        *centre,
+        0,
+        (@barrel_angle + Angle.new(3*PI/2)).to_gosu,
+        0)
       super
     end
 
@@ -179,7 +184,7 @@ module TankGame
     end
 
     def barrel_rotate_speed
-      0.1
+      Angle.new(0.1)
     end
 
     def width
