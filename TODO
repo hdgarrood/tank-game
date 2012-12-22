@@ -1,5 +1,5 @@
 create a ZOrder module
-Test::Unit
+tests
 collisions
  - object map?
 gravity
@@ -13,7 +13,7 @@ REFACTORING
 * State::Base instances should have a resources instance attr, instead of
   getting them from $window
 * is finite_state_machine needed?
-* Points should allow methods like #map, #each, #select
-* GameObject#{centre,two_corners,four_corners} should return Points.
 * remove boosting from Player
 * don't use eval in LevelParser
+* extract crosshair cursor into separate module
+* Mouse location function, returning a Point

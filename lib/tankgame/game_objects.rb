@@ -19,7 +19,7 @@ module TankGame
     end
 
     def draw
-      @sprite.draw(x, y, 0)
+      @sprite.draw(@x, @y, 0)
     end
 
     # the object's physical width, used for collisions
@@ -50,37 +50,33 @@ module TankGame
       $window.fsm.current_state.collided_with?(self, klass, x, y)
     end
 
-    # returns the top-left and bottom-right corner of the object,
-    # dependent upon +offset_x+, +offset_y+, +width+, and +height+
-    def two_corners
-      x1 = @x + offset_x
-      x2 = x1 + width
-      y1 = @y + offset_y
-      y2 = y1 + height
-      return [[x1, y1], [x2, y2]]
+    # does this GameObject overlap another GameObject?
+    def overlap?(other)
+      bounding_box.overlap?(other.bounding_box)
     end
 
-    # returns the co-ordinates of each corner of the object (dependent
-    # upon +offset_x+, +offset_y+, +width+, and +height+) as a 4-element
-    # array, with each element being a 2-element array, ie [[x1, y1],
-    # [x1, y2], [x2,  y1], [x2, y2]]
-    def four_corners
-      c = two_corners
-      return [
-        c[0],
-        [c[0][0], c[1][1]],
-        [c[1][0], c[0][1]],
-        c[1]
-      ]
+    # a Rectangle representing the area of this object which counts as 'solid',
+    # ie, is involved in collisions.
+    def bounding_box
+      Rectangle.new(bounding_box_top_left, bounding_box_bottom_right)
     end
 
     private
-    # returns a list [x, y] of the co-ordinates of what looks like the
-    # centre of the object (judging by the sprite)
+    # returns a Point of what looks like the centre of the object (judging by
+    # the sprite)
     def centre
-      [@x + (@sprite.width / 2), @y + (@sprite.height / 2)]
+      Point.new(@x + (@sprite.width / 2), @y + (@sprite.height / 2))
     end
 
+    # used in #bounding_box; returns a Point of the top left of this object's
+    # bounding box
+    def bounding_box_top_left
+      Point.new(@x + offset_x, @y + offset_y)
+    end
+
+    def bounding_box_bottom_right
+      Point.new(@x + offset_x + width, @y + offset_y + height)
+    end
   end
 
 
@@ -132,8 +128,8 @@ module TankGame
       end
 
       # work out which direction the barrel wants to be pointing
-      mouse_angle = Angle.new(Math.atan2($window.mouse_y - centre[1],
-                                         $window.mouse_x - centre[0]))
+      mouse_angle = Angle.new(Math.atan2($window.mouse_y - centre.y,
+                                         $window.mouse_x - centre.x))
       case mouse_angle.quadrant
       when :first
         @barrel_target = 0.0

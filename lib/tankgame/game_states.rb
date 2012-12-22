@@ -6,7 +6,7 @@ require 'tankgame/background_drawing'
 module TankGame
   module State
     class Base
-      extend BackgroundDrawing
+      include BackgroundDrawing
 
       def initialize
         @objects = []
@@ -33,19 +33,12 @@ module TankGame
       # instance of +klass+, else returns false
       def collided_with?(obj, klass, x, y)
         test_obj = obj.dup
-        [x, y].each do |arg|
-          fail "can't pass non-numeric value #{arg} to collided_with" unless arg.is_a? Numeric
-        end
-        test_obj.x = x
-        test_obj.y = y
+        test_obj.x = x.to_f
+        test_obj.y = y.to_f
 
-        @objects.each do |o|
-          next if !o.is_a? klass
-          test_obj.four_corners.each do |x, y|
-            return true if Point.new(x, y).within_rect?(*o.two_corners.flatten)
-          end
+        @objects.any? do |o|
+          !o.is_a?(klass) && test_obj.overlap?(o)
         end
-        return false
       end
     end
 

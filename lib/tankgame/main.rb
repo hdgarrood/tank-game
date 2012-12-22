@@ -22,7 +22,7 @@ module TankGame
     end
 
     def draw
-      @fsm.draw
+      @fsm.current_state.draw
     end
   end
 end
