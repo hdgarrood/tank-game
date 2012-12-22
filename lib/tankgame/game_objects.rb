@@ -127,7 +127,7 @@ module TankGame
       when :second
         @barrel_target = -Math::PI
       else
-        @barrel_target = mouse_angle.angle
+        @barrel_target = mouse_angle.to_f
       end
 
       # debug

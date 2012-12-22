@@ -2,19 +2,18 @@ module TankGame
   module Geometry
     class Angle
       include Math
-      attr_reader :angle
 
-      def initialize(angle)
-        @angle = normalize(angle)
+      def initialize(radians)
+        @radians = normalize(radians)
       end
 
       def quadrant
         # don't worry, +between?+ is inclusive for floats
-        if @angle.between? 0, PI/2
+        if @radians.between? 0, PI/2
           :first
-        elsif @angle.between? PI/2, PI
+        elsif @radians.between? PI/2, PI
           :second
-        elsif @angle.between? -PI, -PI/2
+        elsif @radians.between? -PI, -PI/2
           :third
         else
           :fourth
@@ -22,11 +21,15 @@ module TankGame
       end
 
       def direction
-        if @angle.between? -PI/2, PI/2
+        if @radians.between? -PI/2, PI/2
           :right
         else
           :left
         end
+      end
+
+      def to_f
+        @radians.to_f
       end
 
       private
