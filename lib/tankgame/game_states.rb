@@ -20,11 +20,9 @@ module TankGame
 
       def draw
         draw_background
-        @objects.each do |o|
-          o.draw
-        end
-        if uses_special_cursor?
-          cursor = $window.resources.sprites[:cursor]
+        @objects.each(&:draw)
+        if uses_crosshair_cursor?
+          cursor = $window.resources.sprites[:crosshair_cursor]
           cursor.draw($window.mouse_x - (cursor.width / 2),
                       $window.mouse_y - (cursor.height / 2), 0)
         end
@@ -65,7 +63,7 @@ module TankGame
         @objects = LevelParser.parse('one')
       end
 
-      def uses_special_cursor?
+      def uses_crosshair_cursor?
         true
       end
     end
