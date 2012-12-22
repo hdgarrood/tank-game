@@ -2,8 +2,6 @@ require 'time'
 require 'gosu'
 
 module TankGame
-  # TODO: check that Gosu::milliseconds won't overflow and bugger
-  # everything up.
   class Countdown
     def initialize
       @started = false
