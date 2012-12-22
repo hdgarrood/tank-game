@@ -3,6 +3,17 @@ Test::Unit
 collisions
  - object map?
 gravity
-projectiles
 grappling
-enemies
+
+REFACTORING
+===========
+
+* State::Base#collided_with? should be a GameObject instance method
+* remove references to $window
+* State::Base instances should have a resources instance attr, instead of
+  getting them from $window
+* Extract background drawing into a separate module
+* is finite_state_machine needed?
+* GameObject#{centre,two_corners,four_corners} should return Points.
+* remove boosting from Player
+* don't use eval in LevelParser
