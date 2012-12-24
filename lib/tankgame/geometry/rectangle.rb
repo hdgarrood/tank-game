@@ -39,9 +39,31 @@ module TankGame
       end
 
       # does this Rectangle overlap with another Rectangle?
-      # this can be optimised
+      # returns false if the rectangles are just touching
       def overlap?(other)
-        four_corners.any? { |c| c.within_rectangle?(other) }
+        [x1, x2].any? {|a| a.between?(other.x1, other.x2) } &&
+          [y1, y2].any? {|a| a.between?(other.y1, other.y2) } &&
+          !touch?(other)
+      end
+
+      def touch?(other)
+        touch_x?(other) || touch_y?(other)
+      end
+
+      protected
+      attr_reader :x1, :x2, :y1, :y2
+
+      private
+      def touch_x?(other)
+        (x1 == other.x2 || x2 == other.x1) &&
+          ([y1, y2].any? {|a| a.between?(other.y1, other.y2) } ||
+           [other.y1, other.y2].any? {|a| a.between?(y1, y2) })
+      end
+
+      def touch_y?(other)
+        (y1 == other.y2 || y2 == other.y1) &&
+          ([x1, x2].any? {|a| a.between?(other.x1, other.x2) } ||
+           [other.x1, other.x2].any? {|a| a.between?(x1, x2) })
       end
     end
   end

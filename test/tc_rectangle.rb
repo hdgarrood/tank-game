@@ -23,5 +23,8 @@ class RectangleTest < Test::Unit::TestCase
     rect5 = Rectangle.new(p3, p4)
 
     assert !rect5.overlap?(rect3)
+
+    assert rect1.overlap?(rect1),
+      "rectangles should overlap themselves"
   end
 end

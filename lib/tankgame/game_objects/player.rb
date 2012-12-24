@@ -58,7 +58,6 @@ module TankGame
 
         # collisions
         blocks = collisions_with(Block)
-        puts blocks if blocks.any?
         while (b = blocks.shift)
           while overlap?(b)
             @x -= @xspeed / 10.0
