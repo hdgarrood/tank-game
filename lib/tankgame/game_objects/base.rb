@@ -18,6 +18,10 @@ module TankGame
       def do_logic
       end
 
+      def gravity
+        0.5 # pixels / step^2
+      end
+
       def draw
         @sprite.draw(@x, @y, 0)
       end

@@ -6,7 +6,7 @@ module TankGame
     class Game < Base
       def initialize
         super
-        @objects = Levels::FallingBlockExample.construct
+        @objects = Levels::One.construct
       end
 
       def uses_crosshair_cursor?

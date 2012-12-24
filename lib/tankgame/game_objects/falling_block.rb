@@ -2,17 +2,19 @@ module TankGame
   module GameObjects
     class FallingBlock < Block
       include AffectedByGravity
+      include CollidesWithThings
+
+      register_collision_class(Block)
+
       def initialize(*args)
-        @y = @yspeed = 0
+        @xspeed = @yspeed = 0
         super(*args)
       end
 
       def do_logic
-        if @y > 300
-          require 'debugger'; debugger
-        end
-        adjust_yspeed_for_gravity
         @y += @yspeed
+        do_collision_logic
+        do_gravity_logic
       end
     end
   end

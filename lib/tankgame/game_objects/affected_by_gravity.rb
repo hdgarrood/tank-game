@@ -1,24 +1,16 @@
 module TankGame
   module GameObjects
     module AffectedByGravity
-      def gravity
-        0.5 # pixels / step^2
-      end
-
-      def adjust_yspeed_for_gravity
-        # if there is another block directly below
+      # ensure that this is called after do_collision_logic, because we don't
+      # want the call to collisions_with? to return any objects which +self+ is
+      # actually colliding with
+      def do_gravity_logic
+        # finally, gravity
         if collisions_with(Block, x, y+1).any?
-          # stop accelerating downwards
-          @yspeed = 0.0
+          @yspeed = 0
         else
-          # accelerate downwards
           @yspeed += gravity
         end
-
-        while collisions_with(Block).any?
-          # move upwards until not embedded in blocks
-          @y -= 0.5
-        end 
       end
     end
   end

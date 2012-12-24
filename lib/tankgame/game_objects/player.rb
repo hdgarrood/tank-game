@@ -3,12 +3,17 @@ require 'tankgame/geometry'
 require 'tankgame/resources'
 require 'tankgame/mouse'
 require 'tankgame/game_objects/affected_by_gravity'
+require 'tankgame/game_objects/block'
+require 'tankgame/game_objects/collides_with_things'
 
 module TankGame
   module GameObjects
     class Player < BaseObject
       include AffectedByGravity
+      include CollidesWithThings
       include Geometry
+
+      register_collision_class(Block)
 
       def initialize(x, y)
         super(x, y)
@@ -44,12 +49,8 @@ module TankGame
       end
 
       def do_logic
-        # move
-        @x += @xspeed
-        @y += @yspeed
-
         # adjust xspeed and yspeed
-        # engines
+        # player movement
         case @motion
         when :left
           @xspeed -= acceleration
@@ -63,24 +64,12 @@ module TankGame
           @xspeed > 0 ? @xspeed -= friction : @xspeed += friction
         end
 
-        # other collisions
-        blocks = collisions_with(Block)
-        while (b = blocks.shift)
-          while overlap?(b)
-            @x -= @xspeed / 10.0
-          end
-        end
+        # move
+        @x += @xspeed
+        @y += @yspeed
 
-        # collisions with floor
-        if collisions_with(Block, x, y + 1).any?
-          while collisions_with(Block, x, y + 1).any?
-            @yspeed = 0
-            @y -= 1
-          end
-        else
-          adjust_yspeed_for_gravity
-        end
-
+        do_collision_logic
+        do_gravity_logic
 
         # barrel direction
         @barrel_angle = @barrel_target
@@ -100,10 +89,6 @@ module TankGame
       private
       # returns the current highest possible x-acceleration for the player
       def acceleration
-        0.5
-      end
-
-      def gravity
         0.5
       end
 
