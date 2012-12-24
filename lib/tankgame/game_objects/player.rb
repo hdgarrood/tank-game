@@ -49,6 +49,9 @@ module TankGame
       end
 
       def do_logic
+        # barrel direction
+        @barrel_angle = new_barrel_angle(@barrel_angle, @barrel_target)
+
         # adjust xspeed and yspeed
         # player movement
         case @motion
@@ -70,9 +73,6 @@ module TankGame
 
         do_collision_logic
         do_gravity_logic
-
-        # barrel direction
-        @barrel_angle = @barrel_target
       end
 
       def draw
@@ -99,11 +99,27 @@ module TankGame
       end
 
       def barrel_rotate_speed
-        0.1
+        0.25
       end
 
-      # either :clockwise or :anticlockwise
-      def barrel_rotation_direction
+      # returns the new angle which the barrel should be pointing, given its
+      # current angle and its target
+      def new_barrel_angle(current, target)
+        hard_left = Angle.new(Math::PI)
+        hard_right = Angle.new(0)
+
+        difference = current - target
+        if difference.to_f <= barrel_rotate_speed + 0.05
+          target
+        elsif target == hard_left || current == hard_right
+          current - barrel_rotate_speed
+        elsif target == hard_right || current == hard_left
+          current + barrel_rotate_speed
+        elsif current < target
+          current + barrel_rotate_speed
+        else
+          current - barrel_rotate_speed
+        end
       end
 
       def width
