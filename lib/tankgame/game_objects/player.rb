@@ -5,7 +5,7 @@ require 'tankgame/mouse'
 
 module TankGame
   module GameObjects
-    class Player < Base
+    class Player < BaseObject
       include Geometry
 
       def initialize(x, y)
@@ -57,14 +57,7 @@ module TankGame
         end
 
         # barrel direction
-        barrel_difference = @barrel_angle - @barrel_target
-        if barrel_difference < barrel_rotate_speed
-          @barrel_angle = @barrel_target
-        elsif @barrel_angle < @barrel_target
-          @barrel_angle += barrel_rotate_speed
-        else
-          @barrel_angle -= barrel_rotate_speed
-        end
+        @barrel_angle = @barrel_target
       end
 
       def draw
@@ -72,7 +65,7 @@ module TankGame
         @barrel_sprite[barrel_direction].draw_rot(
           *centre,
           0,
-          (@barrel_angle + Angle.new(3*PI/2)).to_gosu,
+          @barrel_angle.to_gosu,
           0)
         super
       end
@@ -90,11 +83,14 @@ module TankGame
       end
 
       def barrel_rotate_speed
-        Angle.new(0.1)
+        0.1
+      end
+
+      # either :clockwise or :anticlockwise
+      def barrel_rotation_direction
       end
 
       def width
-        # FIXME: make bouncing box better for player
         32
       end
 

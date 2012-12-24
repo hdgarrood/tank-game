@@ -2,9 +2,9 @@ require 'tankgame/geometry'
 
 module TankGame
   module GameObjects
-    class Base
+    class BaseObject
       include Geometry
-      attr_accessor :x, :y
+      attr_reader :x, :y
 
       def initialize(x, y)
         @sprite = nil
@@ -47,7 +47,7 @@ module TankGame
       # true if +self+ placed at +x+, +y+ would collide with an object
       # which is an object of class +klass+
       def collided_with?(klass, x = @x, y = @y)
-        $window.fsm.current_state.collided_with?(self, klass, x, y)
+        $window.current_state.collided_with?(self, klass, x, y)
       end
 
       # does this GameObject overlap another GameObject?

@@ -54,14 +54,14 @@ module TankGame
       end
 
       def to_gosu
-        to_f.radians_to_gosu
+        to_f.radians_to_gosu + 270.0
       end
 
       private
       def normalize(angle)
         if angle < 0
           normalize(angle + 2*PI)
-        elsif angle > 2*PI
+        elsif angle >= 2*PI
           normalize(angle - 2*PI)
         else
           angle.to_f

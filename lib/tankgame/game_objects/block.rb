@@ -1,6 +1,6 @@
 module TankGame
   module GameObjects
-    class Block < Base
+    class Block < BaseObject
       def initialize(x, y)
         super(x, y)
         @sprite = Resources.sprites[:block]
