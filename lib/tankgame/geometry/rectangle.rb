@@ -1,11 +1,12 @@
 module TankGame
   module Geometry
     class Rectangle
-      # takes two objects which respond to :to_point
+      # takes two objects which respond to :to_point, representing the two
+      # corners of a rectangle
       def initialize(p1, p2)
         # get x and y values
-        x1, y1 = p1.to_a
-        x2, y2 = p2.to_a
+        x1, y1 = p1.to_point.to_a
+        x2, y2 = p2.to_point.to_a
 
         # swap if need be, so that x1 <= x2 and y1 <= y2
         x1, x2 = x2, x1 if x1 > x2

@@ -56,6 +56,16 @@ module TankGame
           @xspeed > 0 ? @xspeed -= friction : @xspeed += friction
         end
 
+        # collisions
+        blocks = collisions_with(Block)
+        puts blocks if blocks.any?
+        while (b = blocks.shift)
+          while overlap?(b)
+            @x -= @xspeed / 10.0
+            @y -= @yspeed / 10.0
+          end
+        end
+
         # barrel direction
         @barrel_angle = @barrel_target
       end

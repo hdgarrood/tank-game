@@ -4,7 +4,7 @@ module TankGame
   module GameObjects
     class BaseObject
       include Geometry
-      attr_reader :x, :y
+      attr_accessor :x, :y
 
       def initialize(x, y)
         @sprite = nil
@@ -44,19 +44,19 @@ module TankGame
         0
       end
 
-      # true if +self+ placed at +x+, +y+ would collide with an object
-      # which is an object of class +klass+
-      def collided_with?(klass, x = @x, y = @y)
-        $window.current_state.collided_with?(self, klass, x, y)
+      # returns an Array of all the objects of class +klass+ which collide with
+      # self, when placed at +x+, +y+
+      def collisions_with(klass, x = @x, y = @y)
+        $window.current_state.collisions_with(self, klass, x, y)
       end
 
-      # does this GameObject overlap another GameObject?
+      # does this GameObject overlap the passed instance of GameObject?
       def overlap?(other)
         bounding_box.overlap?(other.bounding_box)
       end
 
-      # a Rectangle representing the area of this object which counts as 'solid',
-      # ie, is involved in collisions.
+      # a Rectangle representing the area of this object which counts as
+      # 'solid', ie, is involved in collisions.
       def bounding_box
         Rectangle.new(bounding_box_top_left, bounding_box_bottom_right)
       end
