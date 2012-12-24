@@ -50,10 +50,6 @@ module TankGame
         touch_x?(other) || touch_y?(other)
       end
 
-      protected
-      attr_reader :x1, :x2, :y1, :y2
-
-      private
       def touch_x?(other)
         (x1 == other.x2 || x2 == other.x1) &&
           ([y1, y2].any? {|a| a.between?(other.y1, other.y2) } ||
@@ -65,6 +61,14 @@ module TankGame
           ([x1, x2].any? {|a| a.between?(other.x1, other.x2) } ||
            [other.x1, other.x2].any? {|a| a.between?(x1, x2) })
       end
+
+      # for debugging purposes
+      def draw
+
+      end
+
+      protected
+      attr_reader :x1, :x2, :y1, :y2
     end
   end
 end

@@ -2,10 +2,12 @@ require 'gosu'
 require 'tankgame/geometry'
 require 'tankgame/resources'
 require 'tankgame/mouse'
+require 'tankgame/game_objects/affected_by_gravity'
 
 module TankGame
   module GameObjects
     class Player < BaseObject
+      include AffectedByGravity
       include Geometry
 
       def initialize(x, y)
@@ -42,28 +44,43 @@ module TankGame
       end
 
       def do_logic
-        # motion
+        # move
+        @x += @xspeed
+        @y += @yspeed
+
+        # adjust xspeed and yspeed
+        # engines
         case @motion
         when :left
           @xspeed -= acceleration
         when :right
           @xspeed += acceleration
         end
-        @x += @xspeed
-        @y += @yspeed
+
+        # friction
         if @xspeed.nonzero?
           # friction reduces the player's speed
           @xspeed > 0 ? @xspeed -= friction : @xspeed += friction
         end
 
-        # collisions
+        # other collisions
         blocks = collisions_with(Block)
         while (b = blocks.shift)
           while overlap?(b)
             @x -= @xspeed / 10.0
-            @y -= @yspeed / 10.0
           end
         end
+
+        # collisions with floor
+        if collisions_with(Block, x, y + 1).any?
+          while collisions_with(Block, x, y + 1).any?
+            @yspeed = 0
+            @y -= 1
+          end
+        else
+          adjust_yspeed_for_gravity
+        end
+
 
         # barrel direction
         @barrel_angle = @barrel_target
@@ -76,12 +93,17 @@ module TankGame
           0,
           @barrel_angle.to_gosu,
           0)
+        bounding_box.draw
         super
       end
 
       private
       # returns the current highest possible x-acceleration for the player
       def acceleration
+        0.5
+      end
+
+      def gravity
         0.5
       end
 

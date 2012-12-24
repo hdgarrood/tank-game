@@ -9,7 +9,7 @@ module TankGame
 
       def self.objects
         [
-          [Player, 64, 416],
+          [Player, 64, 300],
           [Block, 0, 448],
           [Block, 32, 448],
           [Block, 64, 448],

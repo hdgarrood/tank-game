@@ -32,7 +32,7 @@ module TankGame
         test_obj.y = y.to_f
 
         @objects.select do |o|
-          o.is_a?(klass) && test_obj.overlap?(o)
+          !o.equal?(obj) && o.is_a?(klass) && test_obj.overlap?(o)
         end
       end
     end
