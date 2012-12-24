@@ -1,12 +1,10 @@
-require 'gosu'
-require 'tankgame/level_parser'
-require 'tankgame/geometry'
 require 'tankgame/background_drawing'
+require 'tankgame/mouse'
 
 module TankGame
-  module State
+  module States
     class Base
-      include BackgroundDrawing
+      include TankGame::BackgroundDrawing
 
       def initialize
         @objects = []
@@ -20,9 +18,9 @@ module TankGame
         draw_background($window)
         @objects.each(&:draw)
         if uses_crosshair_cursor?
-          cursor = $window.resources.sprites[:crosshair_cursor]
-          cursor.draw($window.mouse_x - (cursor.width / 2),
-                      $window.mouse_y - (cursor.height / 2), 0)
+          cursor = Resources.sprites[:crosshair_cursor]
+          cursor.draw(Mouse.x - (cursor.width / 2),
+                      Mouse.y - (cursor.height / 2), 0)
         end
       end
 
@@ -38,17 +36,5 @@ module TankGame
         end
       end
     end
-
-    class Game < Base
-      def initialize
-        super
-        @objects = LevelParser.parse('one')
-      end
-
-      def uses_crosshair_cursor?
-        true
-      end
-    end
   end
 end
-

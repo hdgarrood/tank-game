@@ -1,10 +1,10 @@
 require 'gosu'
-require 'tankgame/resource_manager'
-require 'tankgame/finite_state_machine'
+require 'tankgame/states'
+require 'tankgame/state_machine'
 
 module TankGame
   class MainWindow < Gosu::Window
-    attr_reader :fsm, :resources
+    include StateMachine
 
     def initialize
       super(640, 480, false)
@@ -12,17 +12,17 @@ module TankGame
     end
 
     def show
-      @resources = ResourceManager.new
-      @fsm = FiniteStateMachine.new
+      @current_state = States::Game.new
       super
     end
 
     def update
-      @fsm.update
+      current_state.update
+      change_state
     end
 
     def draw
-      @fsm.current_state.draw
+      current_state.draw
     end
   end
 end

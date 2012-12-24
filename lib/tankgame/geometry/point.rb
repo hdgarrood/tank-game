@@ -17,7 +17,7 @@ module TankGame
       end
       
       def to_a
-        [@x, @y]
+        [x, y]
       end
     end
   end

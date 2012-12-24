@@ -4,6 +4,14 @@ module TankGame
       include Comparable
       include Math
 
+      class << self
+        # given two objects responding to x and y, give the angle between them
+        def bearing(obj_a, obj_b)
+          new(Math.atan2(obj_b.y - obj_a.y,
+                         obj_b.x - obj_a.x))
+        end
+      end
+
       def initialize(radians)
         @radians = normalize(radians)
       end
