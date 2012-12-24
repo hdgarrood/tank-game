@@ -37,7 +37,7 @@ module TankGame
         end
         
         # work out which direction the barrel wants to be pointing
-        mouse_angle = Angle.bearing(self, Mouse)
+        mouse_angle = Angle.bearing(centre, Mouse)
         case mouse_angle.quadrant
         when :first
           @barrel_target = Angle.new(0)
@@ -99,7 +99,7 @@ module TankGame
       end
 
       def barrel_rotate_speed
-        0.25
+        0.1
       end
 
       # returns the new angle which the barrel should be pointing, given its
