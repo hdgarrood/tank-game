@@ -27,7 +27,7 @@ module TankGame
               @y -= @yspeed
               @x -= @xspeed
               search_lower, search_higher = 0.0, 1.0
-              5.times do
+              10.times do
                 search_factor = (search_lower + search_higher) / 2
                 old_x, old_y = @x, @y
                 @x += @xspeed * search_factor
