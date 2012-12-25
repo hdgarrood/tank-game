@@ -23,8 +23,15 @@ class AngleTest < Test::Unit::TestCase
       :second => PI/2 + 0.1,
       :third => PI + 0.1,
       :fourth => 3*PI/2 + 0.1 }.each do |quad, radians|
-      assert_equal Angle.new(radians).quadrant, quad,
+      assert_equal quad, Angle.new(radians).quadrant,
         "an angle of #{radians} radians should be in the #{quad} quadrant."
     end
+  end
+
+  def test_angles_are_normalized_correctly
+    fl = 2*PI + 1.0
+    assert_equal 1.0, Angle.new(fl).to_f,
+      "angles greater than 2pi should end up as the same angle but between 0" +
+      " and 2pi"
   end
 end
