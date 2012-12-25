@@ -41,12 +41,14 @@ module TankGame
         do_barrel_logic
 
         # adjust xspeed and yspeed
-        # player movement
-        case @motion
-        when :left
-          @xspeed -= acceleration
-        when :right
-          @xspeed += acceleration
+        # player-induced movement, only if sitting on a block
+        if collisions_with(Block, x, y+1).any?
+          case @motion
+          when :left
+            @xspeed -= acceleration
+          when :right
+            @xspeed += acceleration
+          end
         end
 
         # friction
