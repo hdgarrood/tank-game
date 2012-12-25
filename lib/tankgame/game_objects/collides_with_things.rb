@@ -26,28 +26,23 @@ module TankGame
               # move back to where we were at the start of this tick
               @y -= @yspeed
               @x -= @xspeed
-              begin
-                # slowly move towards the objects until we touch one again
-                @x += x_direction * collision_check_increment
-                @y += y_direction * collision_check_increment
-              end until collisions.any? { |c| overlap?(c) }
-              # move back one step
-              @x -= x_direction * collision_check_increment
-              @y -= y_direction * collision_check_increment
+              search_lower, search_higher = 0.0, 1.0
+              5.times do
+                search_factor = (search_lower + search_higher) / 2
+                old_x, old_y = @x, @y
+                @x += @xspeed * search_factor
+                @y += @yspeed * search_factor
+                if collisions.any? { |c| overlap?(c) }
+                  search_higher = search_factor
+                else
+                  search_lower = search_factor
+                end
+                @x, @y = old_x, old_y
+              end
+              @x += @xspeed * search_lower
+              @y += @yspeed * search_lower
             end
           end 
-        end
-
-        def collision_check_increment
-          0.5
-        end
-
-        def x_direction
-          @xspeed <=> 0
-        end
-
-        def y_direction
-          @yspeed <=> 0
         end
       end
     end
