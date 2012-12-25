@@ -17,8 +17,8 @@ module TankGame
       end
 
       module InstanceMethods
-        # changes @x, @y, @xspeed, and @yspeed until +self+ is no longer
-        # colliding with any instances of the collision classes
+        # changes @x and @y based on current @xspeed and @yspeed until +self+
+        # is no longer colliding with any instances of the collision classes
         def do_collision_logic
           self.class.collision_classes.each do |klass|
             # if colliding with something
