@@ -16,7 +16,10 @@ module TankGame
           [Block, 96, 120],
           *(1..19).map do |i|
             [Block, 32*i + 96, 32*i + 120]
-          end
+          end,
+          [FallingBlock, 416, 0],
+          [FallingBlock, 448, 0],
+          [FallingBlock, 448, 32]
         ]
       end
     end
