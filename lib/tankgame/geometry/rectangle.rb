@@ -64,7 +64,7 @@ module TankGame
 
       # for debugging purposes
       def draw
-
+        # TODO
       end
 
       protected

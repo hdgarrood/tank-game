@@ -4,6 +4,7 @@ require 'tankgame/resources'
 require 'tankgame/mouse'
 require 'tankgame/game_objects/affected_by_gravity'
 require 'tankgame/game_objects/block'
+require 'tankgame/game_objects/barrel'
 require 'tankgame/game_objects/collides_with_things'
 
 module TankGame
@@ -11,6 +12,7 @@ module TankGame
     class Player < BaseObject
       include AffectedByGravity
       include CollidesWithThings
+      include Barrel
       include Geometry
 
       register_collision_class(Block)
@@ -18,12 +20,8 @@ module TankGame
       def initialize(x, y)
         super(x, y)
         @sprite = Resources.sprites[:player]
-        @barrel_sprite = {
-          :left => Resources.sprites[:barrel_left],
-          :right => Resources.sprites[:barrel_right]
-        }
         @xspeed = @yspeed = 0
-        @barrel_angle = Angle.new(0)
+        initialize_barrel
       end
 
       def handle_events
@@ -36,21 +34,11 @@ module TankGame
           @motion = :none
         end
         
-        # work out which direction the barrel wants to be pointing
-        mouse_angle = Angle.bearing(centre, Mouse)
-        case mouse_angle.quadrant
-        when :first
-          @barrel_target = Angle.new(0)
-        when :second
-          @barrel_target = Angle.new(Math::PI)
-        else
-          @barrel_target = mouse_angle
-        end
+        handle_barrel_events
       end
 
       def do_logic
-        # barrel direction
-        @barrel_angle = new_barrel_angle(@barrel_angle, @barrel_target)
+        do_barrel_logic
 
         # adjust xspeed and yspeed
         # player movement
@@ -76,12 +64,7 @@ module TankGame
       end
 
       def draw
-        barrel_direction = @barrel_angle.direction
-        @barrel_sprite[barrel_direction].draw_rot(
-          *centre,
-          0,
-          @barrel_angle.to_gosu,
-          0)
+        draw_barrel
         bounding_box.draw
         super
       end
@@ -96,29 +79,6 @@ module TankGame
       # pressing buttons. returns absolute value
       def friction
         (@xspeed * 0.2).abs
-      end
-
-      def barrel_rotate_speed
-        0.1
-      end
-
-      # returns the new angle which the barrel should be pointing, given its
-      # current angle and its target
-      def new_barrel_angle(current, target)
-        hard_left = Angle.new(Math::PI)
-        hard_right = Angle.new(0)
-
-        if (current.to_f - target.to_f).abs <= barrel_rotate_speed
-          target
-        elsif target == hard_left || current == hard_right
-          current - barrel_rotate_speed
-        elsif target == hard_right || current == hard_left
-          current + barrel_rotate_speed
-        elsif current < target
-          current + barrel_rotate_speed
-        else
-          current - barrel_rotate_speed
-        end
       end
 
       def width
