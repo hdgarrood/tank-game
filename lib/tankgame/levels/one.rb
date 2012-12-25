@@ -9,30 +9,14 @@ module TankGame
 
       def self.objects
         [
-          [Player, 64, 300],
-          [Block, 0, 448],
-          [Block, 32, 448],
-          [Block, 64, 448],
-          [Block, 96, 448],
-          [Block, 128, 448],
-          [Block, 160, 448],
-          [Block, 192, 448],
-          [Block, 224, 448],
-          [Block, 256, 448],
-          [Block, 288, 448],
-          [Block, 320, 448],
-          [Block, 352, 448],
-          [Block, 384, 448],
-          [Block, 416, 448],
-          [Block, 448, 448],
-          [Block, 480, 448],
-          [Block, 512, 448],
-          [Block, 544, 448],
-          [Block, 576, 448],
-          [Block, 608, 448],
-          [Block, 640, 448],
-          [Block, 352, 416],
-          [Block, 352, 384]
+          [Player, 64, 30],
+          [Block, 0, 120],
+          [Block, 32, 120],
+          [Block, 64, 120],
+          [Block, 96, 120],
+          *(1..19).map do |i|
+            [Block, 32*i + 96, 32*i + 120]
+          end
         ]
       end
     end
