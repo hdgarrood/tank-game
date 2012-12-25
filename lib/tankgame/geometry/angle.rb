@@ -59,13 +59,7 @@ module TankGame
 
       private
       def normalize(angle)
-        if angle < 0
-          normalize(angle + 2*PI)
-        elsif angle >= 2*PI
-          normalize(angle - 2*PI)
-        else
-          angle.to_f
-        end
+        (angle % (2*PI)).to_f
       end
     end
   end
