@@ -108,8 +108,7 @@ module TankGame
         hard_left = Angle.new(Math::PI)
         hard_right = Angle.new(0)
 
-        difference = current - target
-        if difference.to_f <= barrel_rotate_speed + 0.05
+        if (current.to_f - target.to_f).abs <= barrel_rotate_speed
           target
         elsif target == hard_left || current == hard_right
           current - barrel_rotate_speed
