@@ -29,15 +29,16 @@ module TankGame
               search_lower, search_higher = 0.0, 1.0
               10.times do
                 search_factor = (search_lower + search_higher) / 2
-                old_x, old_y = @x, @y
-                @x += @xspeed * search_factor
-                @y += @yspeed * search_factor
-                if collisions.any? { |c| overlap?(c) }
-                  search_higher = search_factor
-                else
-                  search_lower = search_factor
+                pretend_x = @x + (@xspeed * search_factor)
+                pretend_y = @y + (@yspeed * search_factor)
+
+                pretending_to_be_at(pretend_x, pretend_y) do
+                  if collisions.any? { |c| overlap?(c) }
+                    search_higher = search_factor
+                  else
+                    search_lower = search_factor
+                  end
                 end
-                @x, @y = old_x, old_y
               end
               @x += @xspeed * search_lower
               @y += @yspeed * search_lower

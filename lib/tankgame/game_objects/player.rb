@@ -42,12 +42,14 @@ module TankGame
 
         # adjust xspeed and yspeed
         # player-induced movement, only if sitting on a block
-        if collisions_with(Block, x, y+1).any?
-          case @motion
-          when :left
-            @xspeed -= acceleration
-          when :right
-            @xspeed += acceleration
+        pretending_to_be_at(x, y+1) do
+          if collisions_with(Block).any?
+            case @motion
+            when :left
+              @xspeed -= acceleration
+            when :right
+              @xspeed += acceleration
+            end
           end
         end
 

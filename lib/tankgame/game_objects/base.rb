@@ -50,8 +50,8 @@ module TankGame
 
       # returns an Array of all the objects of class +klass+ which collide with
       # self, when placed at +x+, +y+
-      def collisions_with(klass, x = @x, y = @y)
-        $window.current_state.collisions_with(self, klass, x, y)
+      def collisions_with(klass)
+        $window.current_state.collisions_with(self, klass)
       end
 
       # does this GameObject overlap the passed instance of GameObject?
@@ -63,6 +63,13 @@ module TankGame
       # 'solid', ie, is involved in collisions.
       def bounding_box
         Rectangle.new(bounding_box_top_left, bounding_box_bottom_right)
+      end
+
+      def pretending_to_be_at(pretend_x, pretend_y)
+        old_x, old_y = @x, @y
+        @x, @y = pretend_x, pretend_y
+        yield
+        @x, @y = old_x, old_y
       end
 
       private

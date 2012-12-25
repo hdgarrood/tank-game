@@ -26,13 +26,11 @@ module TankGame
 
       # returns true if +obj+ placed at +x+, +y+ collides with an
       # instance of +klass+, else returns false
-      def collisions_with(obj, klass, x, y)
-        test_obj = obj.dup
-        test_obj.x = x.to_f
-        test_obj.y = y.to_f
-
+      def collisions_with(obj, klass)
         @objects.select do |o|
-          !o.equal?(obj) && o.is_a?(klass) && test_obj.overlap?(o)
+          !o.equal?(obj) &&       # objects shouldn't collide with themselves
+            o.is_a?(klass) &&     # must be of the given class
+            obj.overlap?(o)       # must be colliding
         end
       end
     end
