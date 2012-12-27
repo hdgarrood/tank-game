@@ -8,6 +8,7 @@ class WatchesWindow
     @scrolled_window = init_scrolled_window
     @window.add(@scrolled_window)
     @window.show_all
+    @window.move(670, 10)
   end
 
   def update
