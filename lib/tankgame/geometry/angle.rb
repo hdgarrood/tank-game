@@ -41,6 +41,10 @@ module TankGame
         @radians.to_f
       end
 
+      def to_s
+        "<Angle: #{"%2.3f" % to_f} radians (#{quadrant} quadrant)>"
+      end
+
       def +(other)
         Angle.new(to_f + other.to_f)
       end
