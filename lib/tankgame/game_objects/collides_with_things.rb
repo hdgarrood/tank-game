@@ -27,6 +27,7 @@ module TankGame
               @y -= @yspeed
               @x -= @xspeed
               search_lower, search_higher = 0.0, 1.0
+              # TODO: refactor so that this doesn't happen more than necessary
               10.times do
                 search_factor = (search_lower + search_higher) / 2
                 pretend_x = @x + (@xspeed * search_factor)
@@ -40,8 +41,14 @@ module TankGame
                   end
                 end
               end
-              @x += @xspeed * search_lower
-              @y += @yspeed * search_lower
+              # change xspeed and yspeed so that they reflect the object's
+              # actual new speed
+              @xspeed *= search_lower
+              @yspeed *= search_lower
+
+              # finally, move as far as we are able to
+              @x += @xspeed
+              @y += @yspeed
             end
           end 
         end
