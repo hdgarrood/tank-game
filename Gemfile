@@ -3,4 +3,5 @@ gem "gosu"
 
 group :development do
   gem "simplecov"
+  gem "debugger"
 end

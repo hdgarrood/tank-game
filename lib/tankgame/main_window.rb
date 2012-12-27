@@ -17,7 +17,6 @@ module TankGame
     end
 
     def update
-      require 'debugger'; debugger if $DEBUG && button_down?(Gosu::Kb1)
       current_state.update
       change_state
     end
