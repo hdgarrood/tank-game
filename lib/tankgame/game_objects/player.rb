@@ -50,11 +50,11 @@ module TankGame
             when :right
               @xspeed += acceleration
             end
+
+            # friction
+            @xspeed -= friction
           end
         end
-
-        # friction
-        @xspeed -= friction
 
         # move
         @x += @xspeed
