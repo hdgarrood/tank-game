@@ -33,6 +33,11 @@ module TankGame
             obj.overlap?(o)       # must be colliding
         end
       end
+
+      def add_game_object(obj)
+        @objects << obj
+        nil
+      end
     end
   end
 end

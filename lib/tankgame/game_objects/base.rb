@@ -73,6 +73,11 @@ module TankGame
       end
 
       private
+      # adds a new GameObject to the current game state.
+      def add_game_object(obj)
+        $window.current_state.add_game_object(obj)
+      end
+
       # returns a Point of what looks like the centre of the object (judging by
       # the sprite)
       def centre
